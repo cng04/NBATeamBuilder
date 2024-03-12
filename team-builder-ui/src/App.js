@@ -4,7 +4,7 @@ import Court from './components/Court';
 
 function App() {
   return (
-    <Court>Hello World</Court>
+    <Court/>
   );
 }
 
