@@ -1,1 +1,3 @@
 .DS_Store
+team-builder-backend/node_modules
+team-builder-backend/env-variables.env
