@@ -4,35 +4,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const pg_1 = require("pg");
-const dotenv_1 = __importDefault(require("dotenv"));
+const controller_1 = require("./controller/controller");
 const port = 8000;
 const app = (0, express_1.default)();
-// Load environment variables from .env file 
-dotenv_1.default.config({ path: "env-variables.env" });
-const db_pwd = process.env.DATABASE_PASSWORD;
-console.log("The password is " + db_pwd);
+// Allows express to pass the request json body
+app.use(express_1.default.json());
+// Connect to postgreSQL db
+// client.connect()
+// client.query("Select * from player_data", (err, res) => {
+//     if (!err) {
+//         console.log(res.rows);
+//     } else {
+//         console.log(err.message);
+//     }
+//     client.end();
+// })
 // Default Route
 app.get("/", (req, res) => {
-    res.send("Hello from Express YAYYYY");
+    // res.send("Hello from Express YAYYYY")
+    (0, controller_1.getAllPlayers)(req, res);
+});
+app.get("/hi", (req, res) => {
+    res.send("Hello World");
+});
+app.post("/hi/data", (req, res) => {
+    console.log(req.body);
+    res.send({ "status": "OK" });
+});
+// app.all handles all http methods (i.e. get, post, put, delete)
+app.all("api/all", (req, res) => {
+    return res.sendStatus(200);
 });
 app.listen(port, () => {
     console.log(`Now listening on port: ${port}`);
-});
-const client = new pg_1.Client({
-    host: "localhost",
-    user: "postgres",
-    port: 5432,
-    password: db_pwd,
-    database: "nba-team-builder-db"
-});
-client.connect();
-client.query("Select * from player_data", (err, res) => {
-    if (!err) {
-        console.log(res.rows);
-    }
-    else {
-        console.log(err.message);
-    }
-    client.end();
 });
