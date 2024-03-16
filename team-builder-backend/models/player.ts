@@ -1,4 +1,5 @@
-import {client} from '../database/database';
+import {pool} from '../database/database';
+import { QueryConfig, QueryResult } from 'pg';
 
 import dotenv from 'dotenv'; 
 
@@ -29,24 +30,40 @@ export class Player {
         this.assists = assists;
         this.points = points;
     }
-
+ 
+    // Retrieves all the players from the DB
     static async findAll() {
         const sql = "SELECT * FROM player_data";
 
-        // Connecting to PostgreSQL DB
-        await client.connect();
-
         // Running the SQL Query
-        const result = await client.query(sql);
-
-        // Disconnecting from PostgreSQL DB
-        await client.end();
+        const result = await pool.query(sql);
 
         return result;
     }
 
+    // Retrieves only the player by the specific id
     static async findByID(id: string) {
+        const sql = "SELECT * FROM player_data where player_data.index = " + id;
 
+        // Running the SQL Query
+        const result = await pool.query(sql);
+
+        return result;
+    }
+
+    // Retrieves player by position
+    static async findByPos(pos: string) {
+        const sql = "SELECT * FROM player_data where \"Pos\" Like \'%" + pos + "%\'";
+
+        console.log(sql);
+
+        // Running the SQL Query
+        const result = await pool.query(sql);
+
+        // console.log(result);
+
+
+        return result;
     }
 
 }
