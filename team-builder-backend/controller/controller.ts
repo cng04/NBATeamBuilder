@@ -10,7 +10,7 @@ export const getAllPlayers = async (req: Request, res: Response) => {
             statusCode: 200,
             statusMessage: "OK",
             message: "Successfully retrieved all the players.",
-            data: players,
+            data: players.rows,
         });
     } catch (err) {
         res.status(500).send({
