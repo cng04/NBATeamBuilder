@@ -1,0 +1,15 @@
+.player-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 50px;
+    padding-bottom: 10px;
+    /* background-color: #ffb6c1; */
+}
+
+.player-team, .player-age, .player-name, .player-pos {
+    display: flex;
+    margin-left: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
