@@ -5,7 +5,7 @@ import DisplayPlayer from './DisplayPlayer';
 import { useNavigate } from 'react-router-dom'
 import { PlayerContext } from '../App';
 import { Button } from '@mui/material';
-
+import { hasValue } from '../utility/Utility';
 
 export default function SelectPlayersView(props) {
   // State to hold the players 
@@ -56,7 +56,7 @@ export default function SelectPlayersView(props) {
   const handlePlayerIndexFromChild = (data, operation, userId) => {
     const newMap = new Map(selectedPlayers);
     if (operation == "add") {
-      newMap.set(data, userId);
+      newMap.set(data, {user: userId, position: pos});
       // Indicating that the specified user has selected a player for that position
       setPosSelected(prevState => ({
         ...prevState,
@@ -81,6 +81,7 @@ export default function SelectPlayersView(props) {
   }
 
   // function to determine whether to disable select button in child (DisplayPlayer component)
+  // Hardcoded now - Refactor Later
   const determineDisableSelectButton = () => {
     // No player selected
     if (!posSelected["user1"][pos] && !posSelected["user2"][pos]) {
@@ -109,6 +110,7 @@ export default function SelectPlayersView(props) {
     }
   }
 
+
   return (
     <div className="select-player-view-container">
       {/* button to redirect user to the Court component  */}
@@ -118,9 +120,9 @@ export default function SelectPlayersView(props) {
       {
         players && players.length > 0 ? (
           players.map((player, i) => {
-            return <DisplayPlayer key={i} data={player} userId={user}
+            return <DisplayPlayer key={i} data={player} userId={user} position={pos}
             disableSelectButton={displaySelect} 
-            disableCancelButton={selectedPlayers.has(player.index)}
+            disableCancelButton={hasValue(selectedPlayers, player.index)}
             sendPlayerIndexToParent={handlePlayerIndexFromChild}/>
           })
         ) : <></>

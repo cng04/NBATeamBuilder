@@ -11,11 +11,13 @@ import { useState, createContext } from 'react';
 export const PlayerContext = createContext();
 
 function App() {
-  // State to hold the indicies of the selected players
+  // Map which holds the selected player objects (including index, name, position, stats) as the keys
+  // and the user that selected the player (user1 or user2) as the values
   const [selectedPlayers, setSelectedPlayers] = useState(new Map());
 
-  // State to hold whether a position has a player selected from. If it has, the user cannot 
-  // select another player from that positional view unless that person has been deselected
+  // State to hold whether for each user (user1 and user2) a player has been selected for the five positions. 
+  // If a player has been selected, that user cannot select another player from that position unless 
+  // the selected player has been deselected
   const [posSelected, setPosSelected] = useState({
     "user1": {
       "PG": false,

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import '../css/DisplayPlayer.css';
 import { Button } from '@mui/material';
 import { PlayerContext } from '../App';
+import { hasValue, searchUser, searchSelectedPos } from '../utility/Utility';
 
 
 // This component displays each player "row" in the SelectPlayersView Component
@@ -25,20 +26,23 @@ export default function DisplayPlayer(props) {
     let primaryUser = props.userId;
     setDisabledSelect(props.disableSelectButton[primaryUser]);
     setDisabledCancel(!props.disableCancelButton);
-    
-    // If player has been selected and the primaryUser is not the user that selected the player, disable both select and cancel buttons
-    if (selectedPlayers.has(props.data.index) && primaryUser != selectedPlayers.get(props.data.index)) {
+
+    console.log(searchSelectedPos(selectedPlayers, props.data.index, "position"));
+    // console.log(props.position);
+
+    // If player has been selected and (the primaryUser is not the user that selected the player OR the position tab is not the position that the player was originally selected from), disable both select and cancel buttons
+    if (hasValue(selectedPlayers, props.data.index) && (primaryUser != searchUser(selectedPlayers, props.data.index, "user") || searchSelectedPos(selectedPlayers, props.data.index, "position") !== props.position)){
       setDisabledSelect(true);
       setDisabledCancel(true);
     }
   }, [])
 
   const handleSelectButton = (click) => {
-    props.sendPlayerIndexToParent(player.index, "add", props.userId);
+    props.sendPlayerIndexToParent(player, "add", props.userId);
   }
 
   const handleCancelButton = (click) => {
-    props.sendPlayerIndexToParent(player.index, "remove", props.userId);
+    props.sendPlayerIndexToParent(player, "remove", props.userId);
   }
 
   return (

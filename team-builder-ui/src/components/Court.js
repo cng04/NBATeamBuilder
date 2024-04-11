@@ -7,10 +7,11 @@ import { Button } from '@mui/material';
 
 
 export default function Court(props) {
-  const [selectedPlayers, setSelectedPlayers] = useContext(PlayerContext);
+  // Holds the selectedPlayers data, the posSelected data from the context initialized in App.js
+  const [selectedPlayers, setSelectedPlayers, posSelected, setPosSelected] = useContext(PlayerContext);
 
   useEffect(() => {
-    // console.log(selectedPlayers);
+    console.log(selectedPlayers);
   }, [])
 
   // Allow for routing in this component
@@ -42,7 +43,16 @@ export default function Court(props) {
             <Button variant="contained" value="PF" user="user2" onClick={handleClick}>PF</Button>
             <Button variant="contained" value="C" user="user2" onClick={handleClick}>C</Button>
           </div>
-        </div>
+      </div>
+      <div className="render-players-container">
+        {
+          selectedPlayers && selectedPlayers.size > 0 ? (
+            selectedPlayers.forEach((values, keys) => {
+              console.log(values);
+            })
+          ) : <></>
+        }
+      </div>
     </>
   )
 }
