@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import '../css/DisplayPlayer.css';
 import { Button } from '@mui/material';
+import { PlayerContext } from '../App';
+
 
 // This component displays each player "row" in the SelectPlayersView Component
 export default function DisplayPlayer(props) {
@@ -13,27 +15,30 @@ export default function DisplayPlayer(props) {
   // State to disable select button when button is selected
   const [disabledCancel, setDisabledCancel] = useState(true);
 
+  // Holds the selectedPlayers data, the posSelected data from the context initialized in App.js
+  const [selectedPlayers, setSelectedPlayers, posSelected, setPosSelected] = useContext(PlayerContext);
+
   // Setting the player to be the object passed as a prop from SelectPlayersView 
   // Player Component
   useEffect(() => {
     setPlayer(props.data);
-    console.log(props.disableSelectButton);
-    setDisabledSelect(props.disableSelectButton);
+    let primaryUser = props.userId;
+    setDisabledSelect(props.disableSelectButton[primaryUser]);
     setDisabledCancel(!props.disableCancelButton);
-  })
+    
+    // If player has been selected and the primaryUser is not the user that selected the player, disable both select and cancel buttons
+    if (selectedPlayers.has(props.data.index) && primaryUser != selectedPlayers.get(props.data.index)) {
+      setDisabledSelect(true);
+      setDisabledCancel(true);
+    }
+  }, [])
 
   const handleSelectButton = (click) => {
-    props.sendPlayerIndexToParent(player.index, "add");
-    // setDisabledSelect(true);
-    // setDisabledCancel(false);
-    // notifyParentofSelected(player.index);
-    // setSelectedPlayer(player);
+    props.sendPlayerIndexToParent(player.index, "add", props.userId);
   }
 
   const handleCancelButton = (click) => {
-    props.sendPlayerIndexToParent(player.index, "remove");
-    // setDisabledSelect(false);
-    // setDisabledCancel(true);
+    props.sendPlayerIndexToParent(player.index, "remove", props.userId);
   }
 
   return (

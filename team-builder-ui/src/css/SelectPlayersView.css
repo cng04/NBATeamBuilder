@@ -4,3 +4,9 @@
     justify-content: center;
     margin-top: 10px;
 }
+
+.home-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
