@@ -1,0 +1,6 @@
+.header-container {
+    height: 75px;
+    float: right;
+    display: flex;
+    align-items: center;
+}

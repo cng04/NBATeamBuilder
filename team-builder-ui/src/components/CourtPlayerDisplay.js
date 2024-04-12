@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import '../css/CourtPlayerDisplay.css';
 import { useNavigate } from 'react-router-dom' 
 
+// Component for displaying a selected player in the Court component
 export default function CourtPlayerDisplay(props) {
     // Allow for routing in this component
     const navigate = useNavigate();

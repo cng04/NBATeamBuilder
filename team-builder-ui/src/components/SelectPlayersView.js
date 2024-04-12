@@ -7,6 +7,7 @@ import { PlayerContext } from '../App';
 import { Button } from '@mui/material';
 import { hasValue } from '../utility/Utility';
 
+// Component for when the user(s) wants to select a player from a position
 export default function SelectPlayersView(props) {
   // State to hold the players 
   const [players, setPlayers] = useState([]);

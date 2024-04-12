@@ -6,8 +6,8 @@ import { PlayerContext } from '../App';
 import { Button } from '@mui/material';
 import CourtPlayerDisplay from './CourtPlayerDisplay';
 import { searchMapForPos } from '../utility/Utility';
-
-
+import Header from '../header/Header';
+// Initial App View
 export default function Court(props) {
   // Holds the selectedPlayers data, the posSelected data from the context initialized in App.js
   const [selectedPlayers, setSelectedPlayers, posSelected, setPosSelected] = useContext(PlayerContext);
@@ -32,6 +32,7 @@ export default function Court(props) {
 
   return (
     <>
+      <Header/>
       <div className="court-container">
           {/* <img className="court-image" src={bballCourt}/> */}
           <div className="player-select-container">

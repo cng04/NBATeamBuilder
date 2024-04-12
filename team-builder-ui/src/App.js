@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Court from './components/Court';
 import SelectPlayersView from "./components/SelectPlayersView";
+import AddPlayer from "./components/AddPlayer"
 import { Routes, Route } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import React from 'react'
@@ -28,6 +29,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Court/>}/>
           <Route path="/selectPlayers/:pos/:user" element={<SelectPlayersView/>}/>
+          <Route path="/addPlayers" element={<AddPlayer/>}/>
         </Routes>
       </BrowserRouter>
     </PlayerContext.Provider>

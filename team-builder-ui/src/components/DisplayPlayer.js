@@ -4,7 +4,6 @@ import { Button } from '@mui/material';
 import { PlayerContext } from '../App';
 import { hasValue, searchUser, searchSelectedPos } from '../utility/Utility';
 
-
 // This component displays each player "row" in the SelectPlayersView Component
 export default function DisplayPlayer(props) {
   // State to hold player object
