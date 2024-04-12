@@ -45,13 +45,32 @@ export default function Court(props) {
           </div>
       </div>
       <div className="render-players-container">
+        <div className="user1-players">
+          {
+            selectedPlayers.get("user1") && selectedPlayers.get("user1").size > 0 ? (
+              Array.from(selectedPlayers.get("user1").values()).map((value, index) => {
+                return <h1>{value.Player}</h1>
+              })
+              // For some reason the params have to be ordered as (value, key) 
+              // selectedPlayers.get("user1").forEach((value, key) => {
+              //   return <h1>Hello</h1>;
+              // })
+            ) : <h1>Team 1 not Selected</h1>
+          }
+        </div>
+        <div className="user2-players">
         {
-          selectedPlayers && selectedPlayers.size > 0 ? (
-            selectedPlayers.forEach((values, keys) => {
-              console.log(values);
-            })
-          ) : <></>
-        }
+            selectedPlayers.get("user2") && selectedPlayers.get("user1").size > 0 ? (
+              Array.from(selectedPlayers.get("user2").values()).map((value, index) => {
+                return <h1>{value.Player}</h1>
+              })
+              // For some reason the params have to be ordered as (value, key) 
+              // selectedPlayers.get("user1").forEach((value, key) => {
+              //   return <h1>Hello</h1>;
+              // })
+            ) : <h1>Team 2 Not Selected</h1>
+          }
+        </div>
       </div>
     </>
   )

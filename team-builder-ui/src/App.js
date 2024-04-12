@@ -11,32 +11,19 @@ import { useState, createContext } from 'react';
 export const PlayerContext = createContext();
 
 function App() {
-  // Map which holds the selected player objects (including index, name, position, stats) as the keys
-  // and the user that selected the player (user1 or user2) as the values
-  const [selectedPlayers, setSelectedPlayers] = useState(new Map());
 
-  // State to hold whether for each user (user1 and user2) a player has been selected for the five positions. 
-  // If a player has been selected, that user cannot select another player from that position unless 
-  // the selected player has been deselected
-  const [posSelected, setPosSelected] = useState({
-    "user1": {
-      "PG": false,
-      "SG": false,
-      "SF": false,
-      "PF": false,
-      "C": false
-    }, 
-    "user2": {
-      "PG": false,
-      "SG": false,
-      "SF": false,
-      "PF": false,
-      "C": false
-    }
-  });
+  // Data Structure of selected players is a map of two submaps, which indicate the players selected
+  // for that user. Each user submap is a map of key/value pairs of position (e.g. PG) and the player object
+  // selected
+  let defaultMap = new Map();
+  defaultMap.set("user1", new Map());
+  defaultMap.set("user2", new Map());
+
+  // Map which holds two maps (user1 and user2 as keys). Each map has the position as the key and the player object as the value
+  const [selectedPlayers, setSelectedPlayers] = useState(defaultMap);
 
   return (
-    <PlayerContext.Provider value={[selectedPlayers, setSelectedPlayers, posSelected, setPosSelected]}>
+    <PlayerContext.Provider value={[selectedPlayers, setSelectedPlayers]}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Court/>}/>

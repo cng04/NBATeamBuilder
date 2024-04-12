@@ -11,8 +11,8 @@ export default function SelectPlayersView(props) {
   // State to hold the players 
   const [players, setPlayers] = useState([]);
 
-  // Holds the selectedPlayers data, the posSelected data from the context initialized in App.js
-  const [selectedPlayers, setSelectedPlayers, posSelected, setPosSelected] = useContext(PlayerContext);
+  // Holds the selectedPlayers data from the context initialized in App.js
+  const [selectedPlayers, setSelectedPlayers] = useContext(PlayerContext);
 
   // State to hold the other user
   const [otherUser, setOtherUser] = useState("");
@@ -56,25 +56,10 @@ export default function SelectPlayersView(props) {
   const handlePlayerIndexFromChild = (data, operation, userId) => {
     const newMap = new Map(selectedPlayers);
     if (operation == "add") {
-      newMap.set(data, {user: userId, position: pos});
-      // Indicating that the specified user has selected a player for that position
-      setPosSelected(prevState => ({
-        ...prevState,
-        [userId]: {
-          ...prevState.userId,
-          [pos]: true
-        }
-      }))
+      // newMap.set(data, {user: userId, position: pos});
+      newMap.get(userId).set(pos, data)
     } else if (operation == "remove") {
-      newMap.delete(data);
-      // Indicating that the specified user has not selected a player for that position
-      setPosSelected(prevState => ({
-        ...prevState,
-        [userId]: {
-          ...prevState.userId,
-          [pos]: false
-        }
-      }))
+      newMap.get(userId).delete(pos);
     }
     setSelectedPlayers(newMap);
     navigate("/", data);
@@ -84,19 +69,19 @@ export default function SelectPlayersView(props) {
   // Hardcoded now - Refactor Later
   const determineDisableSelectButton = () => {
     // No player selected
-    if (!posSelected["user1"][pos] && !posSelected["user2"][pos]) {
+    if (!selectedPlayers.get("user1").get(pos) && !selectedPlayers.get("user2").get(pos)) {
       return {
         "user1": false,
         "user2": false
       };
     // user1 has a player selected but user2 doesn't
-    } else if (posSelected["user1"][pos] && !posSelected["user2"][pos]) {
+    } else if (selectedPlayers.get("user1").get(pos) && !selectedPlayers.get("user2").get(pos)) {
       return {
         "user1": true,
         "user2" : false
       };
     // User2 has a player selected but user1 doesn't
-    } else if (!posSelected["user1"][pos] && posSelected["user2"][pos]) {
+    } else if (!selectedPlayers.get("user1").get(pos) && selectedPlayers.get("user2").get(pos)) {
       return {
         "user1": false,
         "user2": true
@@ -122,7 +107,7 @@ export default function SelectPlayersView(props) {
           players.map((player, i) => {
             return <DisplayPlayer key={i} data={player} userId={user} position={pos}
             disableSelectButton={displaySelect} 
-            disableCancelButton={hasValue(selectedPlayers, player.index)}
+            disableCancelButton={hasValue(selectedPlayers, user, player.index)}
             sendPlayerIndexToParent={handlePlayerIndexFromChild}/>
           })
         ) : <></>

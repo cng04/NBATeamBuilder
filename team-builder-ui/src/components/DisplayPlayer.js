@@ -16,22 +16,26 @@ export default function DisplayPlayer(props) {
   // State to disable select button when button is selected
   const [disabledCancel, setDisabledCancel] = useState(true);
 
-  // Holds the selectedPlayers data, the posSelected data from the context initialized in App.js
-  const [selectedPlayers, setSelectedPlayers, posSelected, setPosSelected] = useContext(PlayerContext);
+  // Holds the selectedPlayers data from the context initialized in App.js
+  const [selectedPlayers, setSelectedPlayers] = useContext(PlayerContext);
 
   // Setting the player to be the object passed as a prop from SelectPlayersView 
   // Player Component
   useEffect(() => {
     setPlayer(props.data);
     let primaryUser = props.userId;
+    let otherUser = "";
+    if (primaryUser === "user1") {
+      otherUser = "user2";
+    } else {
+      otherUser = "user1";
+    }
+
     setDisabledSelect(props.disableSelectButton[primaryUser]);
     setDisabledCancel(!props.disableCancelButton);
 
-    console.log(searchSelectedPos(selectedPlayers, props.data.index, "position"));
-    // console.log(props.position);
-
     // If player has been selected and (the primaryUser is not the user that selected the player OR the position tab is not the position that the player was originally selected from), disable both select and cancel buttons
-    if (hasValue(selectedPlayers, props.data.index) && (primaryUser != searchUser(selectedPlayers, props.data.index, "user") || searchSelectedPos(selectedPlayers, props.data.index, "position") !== props.position)){
+    if ((hasValue(selectedPlayers, primaryUser, props.data.index) || hasValue(selectedPlayers, otherUser, props.data.index)) && (!hasValue(selectedPlayers, primaryUser, props.data.index) || (!searchSelectedPos(selectedPlayers, primaryUser, props.position, props.data.index) && !searchSelectedPos(selectedPlayers, otherUser, props.position, props.data.index)))) {
       setDisabledSelect(true);
       setDisabledCancel(true);
     }
