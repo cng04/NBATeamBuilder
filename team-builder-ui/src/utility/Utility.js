@@ -22,8 +22,25 @@ export const searchSelectedPos = (map, user, position, searchIndex) => {
         return true;
       }
     }
-    return false;
   }
 
-  return -1;
+  return false;
+}
+
+// Searches if the submap specified by the user contains a key equal to position (would be
+// either PG, SG, SF, PF, C). Returns true if the submap does have a key equal to that position, 
+// false otherwise
+export const searchMapForPos = (map, user, position) => {
+  if (map.get(user)) {
+    let subMap = map.get(user);
+    console.log(subMap);
+
+    for (const [key, value] of subMap.entries()) {
+      if (key === position) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }

@@ -1,14 +1,19 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import bballCourt from '../images/ballCourt.jpeg'
 import '../css/Court.css'
 import { useNavigate } from 'react-router-dom'
 import { PlayerContext } from '../App';
 import { Button } from '@mui/material';
+import CourtPlayerDisplay from './CourtPlayerDisplay';
+import { searchMapForPos } from '../utility/Utility';
 
 
 export default function Court(props) {
   // Holds the selectedPlayers data, the posSelected data from the context initialized in App.js
   const [selectedPlayers, setSelectedPlayers, posSelected, setPosSelected] = useContext(PlayerContext);
+
+  // Positions on an NBA Team
+  const [ listOfPos, setListOfPos ] = useState(["PG", "SG", "SF", "PF", "C"]);
 
   useEffect(() => {
     console.log(selectedPlayers);
@@ -28,49 +33,33 @@ export default function Court(props) {
   return (
     <>
       <div className="court-container">
-          <img className="court-image" src={bballCourt}/>
-          <div className="user1">
-            <Button value="PG" user="user1" onClick={handleClick}>PG</Button>
-            <Button value="SG" user="user1" onClick={handleClick}>SG</Button>
-            <Button value="SF" user="user1" onClick={handleClick}>SF</Button>
-            <Button value="PF" user="user1" onClick={handleClick}>PF</Button>
-            <Button value="C" user="user1" onClick={handleClick}>C</Button>
+          {/* <img className="court-image" src={bballCourt}/> */}
+          <div className="player-select-container">
+            <div className="player-select">
+              {
+                listOfPos.map((pos) => {
+                  return (searchMapForPos(selectedPlayers, "user1", pos)) ? (
+                    <CourtPlayerDisplay user={"user1"} className="player" position={pos} playerData={selectedPlayers.get("user1").get(pos)}/> 
+                  ) :
+                  (
+                    <Button style={{marginTop: 60}} value={pos} user="user1" onClick={handleClick}>{pos}</Button>
+                  )
+                })
+              }
+            </div>
+            <div className="player-select">
+              {
+                listOfPos.map((pos) => {
+                  return (searchMapForPos(selectedPlayers, "user2", pos)) ? (
+                    <CourtPlayerDisplay user={"user2"} className="player" position={pos} playerData={selectedPlayers.get("user2").get(pos)}/> 
+                  ) :
+                  (
+                    <Button style={{marginTop: 60}} color="secondary" value={pos} user="user2" onClick={handleClick}>{pos}</Button>
+                  )
+                })
+              }
+            </div>
           </div>
-          <div className="user2">
-            <Button variant="contained" value="PG" user="user2" onClick={handleClick}>PG</Button>
-            <Button variant="contained" value="SG" user="user2" onClick={handleClick}>SG</Button>
-            <Button variant="contained" value="SF" user="user2" onClick={handleClick}>SF</Button>
-            <Button variant="contained" value="PF" user="user2" onClick={handleClick}>PF</Button>
-            <Button variant="contained" value="C" user="user2" onClick={handleClick}>C</Button>
-          </div>
-      </div>
-      <div className="render-players-container">
-        <div className="user1-players">
-          {
-            selectedPlayers.get("user1") && selectedPlayers.get("user1").size > 0 ? (
-              Array.from(selectedPlayers.get("user1").values()).map((value, index) => {
-                return <h1>{value.Player}</h1>
-              })
-              // For some reason the params have to be ordered as (value, key) 
-              // selectedPlayers.get("user1").forEach((value, key) => {
-              //   return <h1>Hello</h1>;
-              // })
-            ) : <h1>Team 1 not Selected</h1>
-          }
-        </div>
-        <div className="user2-players">
-        {
-            selectedPlayers.get("user2") && selectedPlayers.get("user1").size > 0 ? (
-              Array.from(selectedPlayers.get("user2").values()).map((value, index) => {
-                return <h1>{value.Player}</h1>
-              })
-              // For some reason the params have to be ordered as (value, key) 
-              // selectedPlayers.get("user1").forEach((value, key) => {
-              //   return <h1>Hello</h1>;
-              // })
-            ) : <h1>Team 2 Not Selected</h1>
-          }
-        </div>
       </div>
     </>
   )

@@ -1,0 +1,14 @@
+.player-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+    padding-bottom: 0;
+}
+
+h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+}
