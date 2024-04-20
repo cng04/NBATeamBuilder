@@ -92,8 +92,22 @@ export class Player {
         return result;
     }
 
+    // Finds a user-added player by id and edits that player's record
     async findPlayerByIdAndUpdate(id: string) {
         const sql = `UPDATE player_data SET "Player" = '${this.name}', "Pos" = '${this.position}', "Age" = ${this.age}, "Tm" = '${this.team}', "FG%" = ${this.fgPercent}, "3P%" = ${this.threePointPercent}, "FT%" = ${this.freeThrowPercent}, "TRB" = ${this.rebounds}, "AST" = ${this.assists}, "PTS" = ${this.points}, "new_player" = ${this.newPlayer} WHERE "index" = '${id}'`;
+
+        // Running the SQL Query
+        const result = await pool.query(sql);
+
+        console.log(result);
+
+        return result;
+    }
+
+    static async findPlayerByIdAndDelete(id: string) {
+        const sql = `DELETE FROM player_data WHERE index = '${id}'`;
+
+        console.log(sql);
 
         // Running the SQL Query
         const result = await pool.query(sql);

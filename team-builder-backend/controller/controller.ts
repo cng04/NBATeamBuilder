@@ -142,7 +142,7 @@ export const updatePlayerByID = async (req: Request, res: Response) => {
             data: null,
         })
     }
-    
+
     // Need to also ensure this player was a user-added player so need to validate that by comparing the id with the ids of the user-added players (new_player = true)
     const userAddedPlayers = await Player.findUserAddedPlayers();
 
@@ -213,5 +213,45 @@ export const updatePlayerByID = async (req: Request, res: Response) => {
 
 // controller method for deleting a user-added player
 export const deletePlayerByID = async (req: Request, res: Response) => {
+    const id: string = req.params.id;
+    
+    // Need to also ensure this player was a user-added player so need to validate that by comparing the id with the ids of the user-added players (new_player = true)
+    const userAddedPlayers = await Player.findUserAddedPlayers();
 
+    let isUserAddedPlayer = false;
+
+    for (let i = 0; i < userAddedPlayers.rows.length; i++) {
+        if (id == userAddedPlayers.rows[i].index) {
+            isUserAddedPlayer = true;
+            break;
+        }
+    }
+
+    if (!isUserAddedPlayer) {
+        return res.status(400).send({
+            statusCode: 400,
+            statusMessage: "Player cannot be deleted",
+            message: null,
+            data: null,
+        })
+    }
+
+    try {
+        await Player.findPlayerByIdAndDelete(id);
+
+        res.send({
+            statusCode: 200,
+            statusMessage: "OK",
+            message: "Successfully deleted player",
+            data: null,
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({
+            statusCode: 500,
+            statusMessage: "Internal Server Error",
+            message: null,
+            data: null,
+        })
+    }
 }
