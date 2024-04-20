@@ -68,11 +68,32 @@ export class Player {
         return result;
     }
 
+    // Retrives all user-added player
+    static async findUserAddedPlayers() {
+        const sql = "SELECT index FROM player_data where new_player = true";
+
+        // Running the SQL Query
+        const result = await pool.query(sql);
+        
+        return result;
+    }
+
     // Inserts a new player's record into the database
     async addNewPlayer() {
         const sql = `INSERT INTO player_data ("Player", "Pos", "Age", "Tm", "FG%", "3P%", "FT%", "TRB", "AST", "PTS", "new_player") VALUES ('${this.name}', '${this.position}', ${this.age}, '${this.team}', ${this.fgPercent}, ${this.threePointPercent}, ${this.freeThrowPercent}, ${this.rebounds}, ${this.assists}, ${this.points}, ${this.newPlayer})`;
 
         console.log(sql);
+
+        // Running the SQL Query
+        const result = await pool.query(sql);
+
+        console.log(result);
+
+        return result;
+    }
+
+    async findPlayerByIdAndUpdate(id: string) {
+        const sql = `UPDATE player_data SET "Player" = '${this.name}', "Pos" = '${this.position}', "Age" = ${this.age}, "Tm" = '${this.team}', "FG%" = ${this.fgPercent}, "3P%" = ${this.threePointPercent}, "FT%" = ${this.freeThrowPercent}, "TRB" = ${this.rebounds}, "AST" = ${this.assists}, "PTS" = ${this.points}, "new_player" = ${this.newPlayer} WHERE "index" = '${id}'`;
 
         // Running the SQL Query
         const result = await pool.query(sql);

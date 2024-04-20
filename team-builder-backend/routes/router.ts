@@ -26,4 +26,14 @@ router.post("/addPlayer", (req: Request, res: Response) => {
     controller.addPlayerByID(req, res);
 })
 
+// Edit a user-added player in the database
+router.put("/edit/:id", (req: Request, res: Response) => {
+    controller.updatePlayerByID(req, res);
+})
+
+// Delete a user-added player in the database
+router.delete("/delete/:id", (req: Request, res: Response) => {
+    controller.deletePlayerByID(req, res);
+})
+
 export default router;
