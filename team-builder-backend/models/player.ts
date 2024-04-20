@@ -17,8 +17,9 @@ export class Player {
     private rebounds: number;
     private assists: number;
     private points: number;
+    private newPlayer: boolean;
 
-    constructor(name: string, position: string, age: number, team: string, fgPercent: number, threePointPercent:number, freeThrowPercent: number, rebounds: number, assists: number,  points: number) {
+    constructor(name: string, position: string, age: number, team: string, fgPercent: number, threePointPercent: number, freeThrowPercent: number, rebounds: number, assists: number,  points: number, newPlayer: boolean) {
         this.name = name;
         this.position = position;
         this.age = age;
@@ -29,11 +30,12 @@ export class Player {
         this.rebounds = rebounds;
         this.assists = assists;
         this.points = points;
+        this.newPlayer = newPlayer;
     }
  
     // Retrieves all the players from the DB
     static async findAll() {
-        const sql = "SELECT * FROM player_data";
+        const sql = "SELECT * FROM player_data ORDER BY index";
 
         // Running the SQL Query
         const result = await pool.query(sql);
@@ -43,7 +45,7 @@ export class Player {
 
     // Retrieves only the player by the specific id
     static async findByID(id: string) {
-        const sql = "SELECT * FROM player_data where player_data.index = " + id;
+        const sql = "SELECT * FROM player_data where player_data.index = " + id + " ORDER BY index";
 
         // Running the SQL Query
         const result = await pool.query(sql);
@@ -53,7 +55,7 @@ export class Player {
 
     // Retrieves player by position
     static async findByPos(pos: string) {
-        const sql = "SELECT * FROM player_data where \"Pos\" Like \'%" + pos + "%\'";
+        const sql = "SELECT * FROM player_data where \"Pos\" Like \'%" + pos + "%\'" + " ORDER BY index";
 
         console.log(sql);
 
@@ -66,4 +68,17 @@ export class Player {
         return result;
     }
 
+    // Inserts a new player's record into the database
+    async addNewPlayer() {
+        const sql = `INSERT INTO player_data ("Player", "Pos", "Age", "Tm", "FG%", "3P%", "FT%", "TRB", "AST", "PTS", "new_player") VALUES ('${this.name}', '${this.position}', ${this.age}, '${this.team}', ${this.fgPercent}, ${this.threePointPercent}, ${this.freeThrowPercent}, ${this.rebounds}, ${this.assists}, ${this.points}, ${this.newPlayer})`;
+
+        console.log(sql);
+
+        // Running the SQL Query
+        const result = await pool.query(sql);
+
+        console.log(result);
+
+        return result;
+    }
 }

@@ -21,4 +21,9 @@ router.post("/displayPosition/:pos", (req: Request, res: Response) =>  {
     controller.getPlayerByPos(req, res);
 });
 
+// Adds a new player to the database
+router.post("/addPlayer", (req: Request, res: Response) => {
+    controller.addPlayerByID(req, res);
+})
+
 export default router;
